@@ -3,7 +3,7 @@ package proto.java.relations.test;
 import proto.java.relations.src.RelationChainer;
 
 public class RelationChainerTest {
-  private StringBuilder format; // a randomly generated format relation expression
+  private StringBuilder format; // a randomly generated formatted relation expression
 
   public RelationChainerTest() {
     format = new StringBuilder();
@@ -15,7 +15,7 @@ public class RelationChainerTest {
     return (int)(Math.random() * (max - min + 1)) + min;
   }
 
-    //* initStringInput generates a unique string format
+    //* initStringInput generates a unique string format (without numbers specified)
   public void genFormattedString(StringBuilder sb) {
     int num_of_operators = intRandomizer(1, 4);
 

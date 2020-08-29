@@ -1,6 +1,5 @@
 package proto.java.relations.src;
 
-import java.util.Stack;
 import java.util.UnknownFormatConversionException;
 
 public class RelationChainer {
@@ -10,8 +9,9 @@ public class RelationChainer {
 // * *
 
 //! Little to no proper error handling currently for this method
-  // Currently, if an error is caused by the end user, this method will
-  // just return a false value (i.e 1 <<= 2 >= 0 , this would be a constitute)
+  // If some runtime exception is caused by the end user, this method will
+  // just return a false value (i.e 1 <<= 2 >= 0 will return false rather than
+  // an exception)
   public boolean relation(String dummy, String input, Integer... prms) {
     boolean output = true;
     boolean opr_exists = false;
@@ -35,7 +35,7 @@ public class RelationChainer {
     if(!formatted.isEmpty() && prms.length >= 0) {
         // If there exists some relation character at the beginning,
           // the entire expression is invalid
-      if(isRelationalOp(Character.toString(formatted.charAt(0))) ) {
+      if(!Character.isDigit(formatted.charAt(0)) ) {
         return false; // !!! Error handling requried
       }
 
@@ -61,7 +61,10 @@ public class RelationChainer {
           }
         }
 
-        else if(isDigit(formatted.charAt(i))) { // If current ele is a number
+        // If the current element is a positive or negative integer
+        else if(Character.isDigit(formatted.charAt(i)) ||
+        (i+1 < formatted.length() && curr_element.equals("-")
+        && Character.isDigit(formatted.charAt(i+1))) ) {
           if(operator == null)
             continue;
 
@@ -73,9 +76,9 @@ public class RelationChainer {
           }
         }
         else
-          return false; // !!! the mathematical expression contains invalid characters
+          return false; // !!! the boolean expression contains invalid characters
       }
-      //* If operator is not null, the mathematical expression is invalid
+      //* If operator is not null, the boolean expression is invalid
       if(operator != null) return false; // !!! Error handling required
       if(!opr_exists) return false; // !!! Error handling required
     }
@@ -91,17 +94,31 @@ public class RelationChainer {
   // Helper Methods
 // * *
 
-    //* isRelationalOp checks if the formatted string is an relational operator
-  private boolean isRelationalOp(String op) {
+  /*
+  *         isRelationalOp
+  * Parameters:
+  *   String op: represents a relational operator
+  *
+  * Checks if op contains a character that pertains to a relational operator
+  */
+  public static boolean isRelationalOp(String op) {
     switch(op) {
       case ">":
       case "<":
       case "=": return true;
-        // Only these chars considered as we are transversing a string linearly
-      default: return false;
+      default: return false; // !!! Error handling required
     }
   }
-    //* calculateBinaryRelation calculates a single relation operation
+
+  /*
+  *         calculateBinaryRelation
+  * Parameters:
+  *   String in: represents a relational operators
+  *   int x: the current element in the prms array in relation()
+  *   int y: the next element within the prms array in relation()
+  *
+  * Calculates a single boolean operation
+  */
   private boolean calculateBinaryRelation(String in, int x, int y) {
     switch(in) {
       case ">":
@@ -117,11 +134,6 @@ public class RelationChainer {
       default: return false; // !!! Error handling required
         // The error would be an incorrect relational string value (i.e <<)
     }
-  }
-
-    //* Determines whether a given string is a valid number
-  private boolean isDigit(Character in) {
-    return Character.isDigit(in);
   }
 
   public static void main(String[] args) {

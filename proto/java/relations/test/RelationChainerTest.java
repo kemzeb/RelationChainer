@@ -93,8 +93,8 @@ public class RelationChainerTest {
   * Utilizes the 'expression' and 'true_ints' fields as
   * parameters for RelationChainer's relation() methods
   */
-  public void genTruthfulExpression(RelationChainer r) {
-    System.out.println(this.getExpression() + "\n");
+  public void printTruthfulExpression(RelationChainer r) {
+    System.out.println(expression);
     System.out.println(r.relation("show",
     expression.toString(), true_ints));
   }
@@ -177,7 +177,7 @@ public class RelationChainerTest {
   public static void main(String[] args) {
     RelationChainer r = new RelationChainer();
     RelationChainerTest t = new RelationChainerTest();
-    t.genTruthfulExpression(r);
+    t.printTruthfulExpression(r);
 
     /* ** ** **
       Testing

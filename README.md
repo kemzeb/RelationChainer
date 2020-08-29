@@ -58,7 +58,7 @@ public static void main(String[] args) {
     RelationChainerTest t = new RelationChainerTest(); 
     
     // upon instantiation, there exists a generated expression and generated array of integers corresponding to the expression
-    t.genTruthfulExpression(r); 
+    t.printTruthfulExpression(r); 
 }
 ```
 The method prints the following:

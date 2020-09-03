@@ -1,6 +1,6 @@
 package proto.java.relations.test;
 
-import java.util.Random;
+import java.util.SplittableRandom;
 
 import proto.java.relations.src.RelationChainer;
 
@@ -8,11 +8,38 @@ public class RelationChainerTest {
   private StringBuilder expression; // a randomly generated boolean expression
   private int num_of_operators; // # of operators corresponding to the most recent method call of genFormattedExpression()
   private Integer[] true_ints; // an integer array generated that is dependent upon 'expression'
+  private int mini, maxi;
 
 
   public RelationChainerTest() {
     expression = new StringBuilder();
     genFormattedExpression(); // The constructor creates a formatted string
+
+    mini = -10_000;
+    maxi = 10_000;
+
+    true_ints = new Integer[num_of_operators+1];
+    genTrueIntValues();
+  }
+
+  /*
+  *         RelationChainerTest (constructor)
+  * Fields utilized:
+  *   int min : the minimum value for an integer element in true_ints
+  *   int max : the max value for an integer element in true_ints
+  *
+  * note: The 'intRandomizer()' seems to have some issues with particular min
+  * and max values as it will based on their values generate a negative value
+  * with simple arithmetic and passed as a parameter to nextInt() method.
+  *
+  * An overloaded constructor.
+  */
+  public RelationChainerTest(int min, int max) {
+    expression = new StringBuilder();
+    genFormattedExpression(); // The constructor creates a formatted string
+
+    mini = min;
+    maxi = max;
 
     true_ints = new Integer[num_of_operators+1];
     genTrueIntValues();
@@ -30,7 +57,7 @@ public class RelationChainerTest {
     num_of_operators = intRandomizer(1, 5); // # of operators for the boolean expression
 
     for(int i = 0; i < num_of_operators; i++) {
-      int choice = intRandomizer(1,5);
+      int choice = intRandomizer(1,6);
       expression.append("%d");
       chooseRelationalOp(expression, choice); // chooses an operator based on 'choice'
     }
@@ -57,7 +84,7 @@ public class RelationChainerTest {
       // 'genFormattedExpression()'
 
         // Initialize the first element with an arbitrary integer
-      true_ints[0] = intRandomizer(0, 10_000);
+      true_ints[0] = intRandomizer(mini, maxi);
 
     for(int i = 0; i < expression.length(); i++) {
       curr_element = Character.toString(expression.charAt(i));
@@ -109,16 +136,17 @@ public class RelationChainerTest {
   *   int min: an integer lower bound for number randomization
   *   int max: an integer upper bound for number randomization
   *
-  * Randomizes a number given a lower and upper bound
+  * Randomizes a number given a lower and upper bound using
+  * java.util.SplittableRandom class
   */
   public int intRandomizer(int min, int max) {
-    return new Random().nextInt(max - min) + min;
+    return new SplittableRandom().nextInt(max - min) + min;
   }
 
   /*
   *         chooseRelationalOp
   * Parameters:
-  *   StringBuilder input: represents a relational operator :
+  *   StringBuilder input: represents a relational operator
   *   int choice: an integer that determines what relational operator to choose
   *
   * Appends a string to some StringBuilder given a specific 'choice'
@@ -149,7 +177,6 @@ public class RelationChainerTest {
 * operator.
 */
   private void determineTrueInt(String expression, int j) {
-    int mini = -10_000, maxi = 10_000;
     switch(expression) {
       case ">":
       true_ints[j+1] = intRandomizer(mini, true_ints[j]-1); break;
@@ -177,13 +204,12 @@ public class RelationChainerTest {
   public static void main(String[] args) {
     RelationChainer r = new RelationChainer();
     RelationChainerTest t = new RelationChainerTest();
-    t.printTruthfulExpression(r);
+
+    // new RelationChainerTest(-100000, 100000).printTruthfulExpression(r);
 
     /* ** ** **
       Testing
 public boolean relation(String dummy, String input, Integer... prms)
     ** ** ** */
-
-
   }
 }

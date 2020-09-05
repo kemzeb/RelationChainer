@@ -1,4 +1,4 @@
-package proto.java.relations.src;
+package relations.src;
 
 import java.lang.RuntimeException;
 

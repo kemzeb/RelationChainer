@@ -1,4 +1,4 @@
-package proto.java.relations.src;
+package relations.src;
 
 import java.util.UnknownFormatConversionException;
 
@@ -131,17 +131,12 @@ public class RelationChainer {
   private boolean calculateBinaryRelation(String in, int x, int y) {
     try {
       switch(in) {
-        case ">":
-        return Integer.compare(x,y) > 0 ? true : false;
-        case "<":
-        return Integer.compare(x,y) < 0 ? true : false;
-        case ">=":
-        return Integer.compare(x,y) >= 0 ? true : false;
-        case "<=":
-        return Integer.compare(x,y) <= 0 ? true : false;
-        case "==":
-        return Integer.compare(x,y) == 0 ? true : false;
-        default: throw new RelationChainerException("Expression contains an incorrect relational operator.");
+        case ">"  :return Integer.compare(x,y) > 0 ? true : false;
+        case "<"  :return Integer.compare(x,y) < 0 ? true : false;
+        case ">=" :return Integer.compare(x,y) >= 0 ? true : false;
+        case "<=" :return Integer.compare(x,y) <= 0 ? true : false;
+        case "==" :return Integer.compare(x,y) == 0 ? true : false;
+        default :throw new RelationChainerException("Expression contains an incorrect relational operator.");
         // !!! The error would be an incorrect relational string value (i.e <<)
       }
     }
